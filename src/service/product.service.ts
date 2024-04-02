@@ -37,3 +37,19 @@ export const updateProduct = async (req: any) => {
         return { message: 'Internal server error' };
     }
 };
+
+
+export const deleteProduct = async (req: any) => {
+    try {
+        const productId = req.params.productId;
+        const deletedProduct = await UserModel.findByIdAndDelete(productId);
+
+        if (!deletedProduct) {
+            return { message: 'Product not found' }
+        }
+        return { message: 'Product deleted successfully' };
+    } catch (error) {
+        console.error("Error updating product:", error);
+        return { message: 'Internal server error' };
+    }
+};

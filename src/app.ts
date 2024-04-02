@@ -21,22 +21,8 @@ app.get(BASE_URL, (req: any, res: any) => {
     res.json({ message: 'Welcome!' });
 });
 
+app.use(BASE_ROUTES.HEALTH_CHECK, healthCheckRouter);
 app.use(BASE_ROUTES.PRODUCT,  productRouter);
-
-app.delete('/v1/product/api/delete-product/:productId', async (req: Request, res: Response) => {
-    try {
-        const productId = req.params.productId;
-        const deletedProduct = await UserModel.findByIdAndDelete(productId);
-
-        if (!deletedProduct) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-        res.status(200).json({ message: 'Product deleted successfully' });
-    } catch (error) {
-        console.error("Error deleting product:", error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
 
 app.get('/v1/product/api/product/:productId', async (req, res) => {
     try {
@@ -54,8 +40,5 @@ app.get('/v1/product/api/product/:productId', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
-
-app.use(BASE_ROUTES.HEALTH_CHECK, healthCheckRouter);
-
 
 export { app };
