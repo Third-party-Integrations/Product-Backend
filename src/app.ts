@@ -1,10 +1,8 @@
 import cors from 'cors';
 import { BASE_ROUTES, BASE_URL } from './constants/url';
 import healthCheckRouter from './routes/health-check.route';
-import express, { Request, Response } from 'express';
-import { db } from './models';
+import express from 'express';
 import productRouter from './routes/product.route';
-const UserModel = db.user
 
 const app = express();
 
@@ -22,23 +20,6 @@ app.get(BASE_URL, (req: any, res: any) => {
 });
 
 app.use(BASE_ROUTES.HEALTH_CHECK, healthCheckRouter);
-app.use(BASE_ROUTES.PRODUCT,  productRouter);
-
-app.get('/v1/product/api/product/:productId', async (req, res) => {
-    try {
-        const productId = req.params.productId;
-
-        console.log(req.params.productId);
-
-        const product = await UserModel.findById(productId);
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-        res.status(200).json(product);
-    } catch (error) {
-        console.error("Error finding product:", error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
+app.use(BASE_ROUTES.PRODUCT, productRouter);
 
 export { app };

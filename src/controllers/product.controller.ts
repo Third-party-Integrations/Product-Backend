@@ -1,6 +1,6 @@
 
 import { NextFunction, Request, Response } from 'express';
-import { createProduct, deleteProduct, getProductsData, updateProduct } from '../service/product.service';
+import { createProduct, deleteProduct, getProduct, getProductsData, updateProduct } from '../service/product.service';
 
 export const handleCreateProduct = async (
     req: Request,
@@ -54,4 +54,18 @@ export const handleDeleteProduct = async (
         res.status(500).json({ message: 'Internal server error' });
         next(ex);
     }
-};handleDeleteProduct
+};
+
+export const handleGetProduct = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const response = await getProduct(req);
+        res.status(200).json(response);
+    } catch (ex) {
+        res.status(500).json({ message: 'Internal server error' });
+        next(ex);
+    }
+};
